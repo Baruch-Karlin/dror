@@ -42,27 +42,46 @@ router.post('/', async (req, res, next) => {
             })
             // filter.forEach(e => console.log(e.href))
             // return filter.map(e => e.href)
-            return filter;
+            const mapped = filter.map(e => {
+                return movieItem = {
+                    name: e.innerText,
+                    url: e.href
+                }
+            })
+            return mapped
         });
-        console.log(data)
 
 
-        // result.map(movieItem => {
-        //     if (movieItem.length) {
-        //         const movie = new Movie({
-        //             _id: new mongoose.Types.ObjectId(),
-        //             year: movieItem[0],
-        //             movie_title: movieItem[1],
-        //             opening_gross: movieItem[2],
-        //             theaters: movieItem[4],
-        //             total_gross: movieItem[6]
-        //         })
-        //         movie.save()
-        //             .then(result => {
-        //                 res.status(200)
-        //             })
-        //     }
-        // })
+        result.map(movieItem => {
+            if (movieItem.length) {
+                
+                let urlForMovie;
+
+                for (let i = 0; i < data.length; i++) {
+                    console.log('1', data[i], '2', movieItem[1])
+                    if (data[i].name == movieItem[1]) {
+                        urlForMovie = data[i].url
+                        console.log(urlForMovie);
+                    }
+                }
+
+                const movie = new Movie({
+                    _id: new mongoose.Types.ObjectId(),
+                    year: movieItem[0],
+                    movie_title: movieItem[1],
+                    movie_title: movieItem[1],
+                    opening_gross: movieItem[2],
+                    theaters: movieItem[4],
+                    total_gross: movieItem[6],
+                    url: urlForMovie
+                })
+
+                movie.save()
+                    .then(result => {
+                        res.status(200)
+                    })
+            }
+        })
         await browser.close();
     })();
 })

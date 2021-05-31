@@ -26,7 +26,7 @@ const puppeteer = require('puppeteer');
     await page2.goto(url2);
 
     //to receive all of the urls
-    const data = await page2.evaluate(() => {
+    const data = () => {
         const body = document.querySelector("tbody");
         const trs = body.getElementsByTagName("tr");
         const arr = Array.prototype.slice.call(trs);
@@ -42,10 +42,19 @@ const puppeteer = require('puppeteer');
         })
         // filter.forEach(e => console.log(e.href))
         // return filter.map(e => e.href)
-        return filter;
-    });
+        const mapped = filter.map(e => {
+            return movieItem = {
+                name: e.innerText,
+                url: e.href
+            }
+        })
 
-//code to extract information from each url
+        return mapped
+    }
+
+    console.log(data)
+
+    //code to extract information from each url
 
     // const data = await page2.evaluate(() => {
     //     const mainDiv = document.querySelector('.mojo-summary-values');
