@@ -18,8 +18,6 @@ const puppeteer = require('puppeteer');
         });
     });
 
-    // console.log(result);
-
     result.forEach(movie => {
         console.log(movie)
     })
