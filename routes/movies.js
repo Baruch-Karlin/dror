@@ -118,18 +118,21 @@ router.put('/', async (req, res, next) => {
                     const movieBonus = {
                         summary: summary,
                         distributor: textArr[0].split(`\n`)[0],
-                        genres: textArr[5],
+                        genres: textArr[5].split(' '),
                         length: textArr[4],
                     }
                     return movieBonus
                 });
 
                 console.log(data)
-                // let updatedMovie = await Movie.find({ movie_title: movie.movie_title });
-                // // console.log(updatedMovie[0]);
-                // updatedMovie[0].distributor = data[0];
-                // await updatedMovie[0].save();
-                // res.status(200).send(updatedMovie[0])
+                let updatedMovie = await Movie.find({ movie_title: movie.movie_title });
+                // console.log(updatedMovie[0]);
+                updatedMovie[0].distributor = data.distributor;
+                updatedMovie[0].summary = data.summary;
+                updatedMovie[0].genres = data.genres;
+                updatedMovie[0].length = data.length;
+                await updatedMovie[0].save();
+                res.status(200).send(updatedMovie[0])
                 await browser.close();
 
             })();

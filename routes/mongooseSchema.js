@@ -10,7 +10,7 @@ const movieSchema = new Schema({
     theaters: String,
     url: String,
     distributor: String,
-    genres: String,
+    genres: [String],
     length: String,
     summary: String,
 
