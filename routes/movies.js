@@ -98,8 +98,6 @@ router.get('/', async (req, res, next) => {
 router.put('/', async (req, res, next) => {
     const movies = await Movie.find({});
     movies.forEach(movie => {
-        console.log(movie.movie_title)
-        if (movie.movie_title == "The Godfather") {
 
             (async () => {
                 const browser = await puppeteer.launch({
@@ -109,7 +107,6 @@ router.put('/', async (req, res, next) => {
                 console.log(movie.url)
                 const url = movie.url
                 await page.goto(url);
-
 
                 const data = await page.evaluate(() => {
                     const summary = document.querySelector('.mojo-heading-summary').innerText
@@ -124,19 +121,16 @@ router.put('/', async (req, res, next) => {
                     return movieBonus
                 });
 
-                console.log(data)
                 let updatedMovie = await Movie.find({ movie_title: movie.movie_title });
-                // console.log(updatedMovie[0]);
                 updatedMovie[0].distributor = data.distributor;
                 updatedMovie[0].summary = data.summary;
                 updatedMovie[0].genres = data.genres;
                 updatedMovie[0].length = data.length;
                 await updatedMovie[0].save();
-                res.status(200).send(updatedMovie[0])
+                res.status(200)
                 await browser.close();
 
             })();
-        }
     })
 })
 
