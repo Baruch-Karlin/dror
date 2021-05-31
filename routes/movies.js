@@ -40,8 +40,6 @@ router.post('/', async (req, res, next) => {
                     return (e)
                 }
             })
-            // filter.forEach(e => console.log(e.href))
-            // return filter.map(e => e.href)
             const mapped = filter.map(e => {
                 return movieItem = {
                     name: e.innerText,
@@ -54,7 +52,7 @@ router.post('/', async (req, res, next) => {
 
         result.map(movieItem => {
             if (movieItem.length) {
-                
+
                 let urlForMovie;
 
                 for (let i = 0; i < data.length; i++) {
@@ -96,5 +94,31 @@ router.get('/', async (req, res, next) => {
     const sum = mapped.reduce(reducer);
     res.send({ sum });
 })
+
+router.put('/', async (req, res, next) => {
+    const movies = await Movie.find({});
+    movies.forEach(movie => {
+
+        (async () => {
+            const browser = await puppeteer.launch({
+                headless: true,
+            });
+            const page = await browser.newPage();
+            const url = movie.url
+            await page.goto(url);
+
+
+            const data = await page.evaluate(() => {
+                const mainDiv = document.querySelector('.mojo-summary-values');
+                const textArr = Array.prototype.slice.call(mainDiv.children).map(e => e.children[1].innerText);
+                return textArr
+            });
+
+            console.log(data);
+            await browser.close();
+        })();
+    })
+})
+
 
 module.exports = router;
