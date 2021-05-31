@@ -41,7 +41,8 @@ const puppeteer = require('puppeteer');
             }
         })
         // filter.forEach(e => console.log(e.href))
-        return filter.map(e => e.href)
+        // return filter.map(e => e.href)
+        return filter;
     });
 
 //code to extract information from each url
