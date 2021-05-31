@@ -26,33 +26,33 @@ const puppeteer = require('puppeteer');
     await page2.goto(url2);
 
     //to receive all of the urls
-    const data = () => {
-        const body = document.querySelector("tbody");
-        const trs = body.getElementsByTagName("tr");
-        const arr = Array.prototype.slice.call(trs);
-        const tds = arr.map(e => {
-            return (e.cells[1])
-        })
-        const list = tds.map(e => Array.prototype.slice.call(e.getElementsByTagName('a')))
-        const as = a = list.map(e => (e[0]))
-        const filter = as.filter(e => {
-            if (e !== undefined) {
-                return (e)
-            }
-        })
-        // filter.forEach(e => console.log(e.href))
-        // return filter.map(e => e.href)
-        const mapped = filter.map(e => {
-            return movieItem = {
-                name: e.innerText,
-                url: e.href
-            }
-        })
+    // const data = () => {
+    //     const body = document.querySelector("tbody");
+    //     const trs = body.getElementsByTagName("tr");
+    //     const arr = Array.prototype.slice.call(trs);
+    //     const tds = arr.map(e => {
+    //         return (e.cells[1])
+    //     })
+    //     const list = tds.map(e => Array.prototype.slice.call(e.getElementsByTagName('a')))
+    //     const as = a = list.map(e => (e[0]))
+    //     const filter = as.filter(e => {
+    //         if (e !== undefined) {
+    //             return (e)
+    //         }
+    //     })
+    //     // filter.forEach(e => console.log(e.href))
+    //     // return filter.map(e => e.href)
+    //     const mapped = filter.map(e => {
+    //         return movieItem = {
+    //             name: e.innerText,
+    //             url: e.href
+    //         }
+    //     })
 
-        return mapped
-    }
+    //     return mapped
+    // }
 
-    console.log(data)
+    // console.log(data)
 
     //code to extract information from each url
 

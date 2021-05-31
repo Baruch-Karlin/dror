@@ -112,16 +112,24 @@ router.put('/', async (req, res, next) => {
 
 
                 const data = await page.evaluate(() => {
+                    const summary = document.querySelector('.mojo-heading-summary').innerText
                     const mainDiv = document.querySelector('.mojo-summary-values');
                     const textArr = Array.prototype.slice.call(mainDiv.children).map(e => e.children[1].innerText);
-                    return textArr
+                    const movieBonus = {
+                        summary: summary,
+                        distributor: textArr[0].split(`\n`)[0],
+                        genres: textArr[5],
+                        length: textArr[4],
+                    }
+                    return movieBonus
                 });
 
-                let updatedMovie = await Movie.find({ movie_title: movie.movie_title });
-                // console.log(updatedMovie[0]);
-                updatedMovie[0].distributor = data[0];
-                await updatedMovie[0].save();
-                res.status(200).send(updatedMovie[0])
+                console.log(data)
+                // let updatedMovie = await Movie.find({ movie_title: movie.movie_title });
+                // // console.log(updatedMovie[0]);
+                // updatedMovie[0].distributor = data[0];
+                // await updatedMovie[0].save();
+                // res.status(200).send(updatedMovie[0])
                 await browser.close();
 
             })();
