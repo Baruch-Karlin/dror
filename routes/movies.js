@@ -98,25 +98,34 @@ router.get('/', async (req, res, next) => {
 router.put('/', async (req, res, next) => {
     const movies = await Movie.find({});
     movies.forEach(movie => {
+        console.log(movie.movie_title)
+        if (movie.movie_title == "The Godfather") {
 
-        (async () => {
-            const browser = await puppeteer.launch({
-                headless: true,
-            });
-            const page = await browser.newPage();
-            const url = movie.url
-            await page.goto(url);
+            (async () => {
+                const browser = await puppeteer.launch({
+                    headless: true,
+                });
+                const page = await browser.newPage();
+                console.log(movie.url)
+                const url = movie.url
+                await page.goto(url);
 
 
-            const data = await page.evaluate(() => {
-                const mainDiv = document.querySelector('.mojo-summary-values');
-                const textArr = Array.prototype.slice.call(mainDiv.children).map(e => e.children[1].innerText);
-                return textArr
-            });
+                const data = await page.evaluate(() => {
+                    const mainDiv = document.querySelector('.mojo-summary-values');
+                    const textArr = Array.prototype.slice.call(mainDiv.children).map(e => e.children[1].innerText);
+                    return textArr
+                });
 
-            console.log(data);
-            await browser.close();
-        })();
+                let updatedMovie = await Movie.find({ movie_title: movie.movie_title });
+                // console.log(updatedMovie[0]);
+                updatedMovie[0].distributor = data[0];
+                await updatedMovie[0].save();
+                res.status(200).send(updatedMovie[0])
+                await browser.close();
+
+            })();
+        }
     })
 })
 
