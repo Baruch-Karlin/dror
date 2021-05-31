@@ -8,5 +8,6 @@ const movieSchema = new Schema({
     opening_gross: String,
     total_gross: String,
     theaters: String,
+    url: String,
 })
 module.exports = mongoose.model('Movie', movieSchema);

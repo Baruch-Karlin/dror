@@ -19,29 +19,28 @@ router.post('/', async (req, res, next) => {
         await page.goto(url);
 
 
-        const result = await page.$$eval('table tr', rows => {
+        const result = await page.$$eval('tbody tr', rows => {
             return Array.from(rows, row => {
                 const columns = row.querySelectorAll('td');
                 return Array.from(columns, column => column.innerText);
             });
         });
-        
-         // console.log(result);
 
         result.map(movieItem => {
-            // console.log(movie)
-            const movie = new Movie({
-                _id: new mongoose.Types.ObjectId(),
-                year: movieItem[0],
-                movie_title: movieItem[1],
-                opening_gross: movieItem[2],
-                theaters: movieItem[4],
-                total_gross: movieItem[6]
-            })
-            movie.save()
-                .then(result => {
-                    res.status(200)
+            if (movie.length) {
+                const movie = new Movie({
+                    _id: new mongoose.Types.ObjectId(),
+                    year: movieItem[0],
+                    movie_title: movieItem[1],
+                    opening_gross: movieItem[2],
+                    theaters: movieItem[4],
+                    total_gross: movieItem[6]
                 })
+                movie.save()
+                    .then(result => {
+                        res.status(200)
+                    })
+            }
         })
         await browser.close();
     })();

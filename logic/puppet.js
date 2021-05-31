@@ -11,7 +11,7 @@ const puppeteer = require('puppeteer');
     await page.goto(url);
 
 
-    const result = await page.$$eval('table tr', rows => {
+    const result = await page.$$eval('tbody tr', rows => {
         return Array.from(rows, row => {
             const columns = row.querySelectorAll('td');
             return Array.from(columns, column => column.innerText);
@@ -19,7 +19,9 @@ const puppeteer = require('puppeteer');
     });
 
     result.forEach(movie => {
+        if (movie.length){
         console.log(movie)
+        }
     })
 
     await browser.close();
